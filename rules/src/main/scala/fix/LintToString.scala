@@ -14,6 +14,9 @@ class LintToString(configuration: LintConfiguration) extends SemanticRule("LintT
       .getOrElse(name.value)(LintConfiguration.default)
       .map(new LintToString(_))
 
+  private val allSafeTypes: List[String] =
+    configuration.defaultSafeTypes ++ configuration.safeTypes
+
   override def fix(implicit doc: SemanticDocument): Patch =
     doc.tree.collect {
       case t @ Term.Select(instance, Term.Name("toString")) =>
@@ -53,7 +56,7 @@ class LintToString(configuration: LintConfiguration) extends SemanticRule("LintT
     def check(symbol: Symbol): Patch =
       if (isString(symbol) && ignoreStrings)
         Patch.empty
-      else if (configuration.safeTypes.contains(symbol.normalized.toString()))
+      else if (allSafeTypes.contains(symbol.normalized.toString()))
         Patch.empty
       else
         Patch.lint(Diagnostic("", message(symbol), targetTerm.pos))
