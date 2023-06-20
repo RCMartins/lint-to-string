@@ -7,7 +7,16 @@ case class LintConfiguration(safeTypes: List[String])
 object LintConfiguration {
   val default: LintConfiguration =
     LintConfiguration(
-      List("Int", "Boolean", "Byte", "Short", "Long", "Float", "Double", "Char")
+      List(
+        "scala.Int.",
+        "scala.Boolean.",
+        "scala.Byte.",
+        "scala.Short.",
+        "scala.Long.",
+        "scala.Float.",
+        "scala.Double.",
+        "scala.Char."
+      )
     )
 
   implicit val decoder: ConfDecoder[LintConfiguration] =
