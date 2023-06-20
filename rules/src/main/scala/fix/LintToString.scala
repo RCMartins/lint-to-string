@@ -3,7 +3,6 @@ package fix
 import metaconfig.Configured
 import scalafix.v1._
 
-import scala.meta.Term.ArgClause
 import scala.meta._
 
 class LintToString(configuration: LintConfiguration) extends SemanticRule("LintToString") {
@@ -15,9 +14,7 @@ class LintToString(configuration: LintConfiguration) extends SemanticRule("LintT
       .getOrElse(name.value)(LintConfiguration.default)
       .map(new LintToString(_))
 
-  override def fix(implicit doc: SemanticDocument): Patch = {
-//    println(doc.tree.structure)
-
+  override def fix(implicit doc: SemanticDocument): Patch =
     doc.tree.collect {
       case t @ Term.Select(instance, Term.Name("toString")) =>
         isSafeError(
@@ -35,15 +32,17 @@ class LintToString(configuration: LintConfiguration) extends SemanticRule("LintT
             ignoreStrings = true,
           )
         }.asPatch
-      case Term.ApplyInfix.After_4_6_0(_, Term.Name("+"), _, ArgClause(List(arg), _)) =>
-        isSafeError(
-          arg,
-          arg,
-          symbol => s"Don't use ${symbol.normalized} on + operator",
-          ignoreStrings = false,
-        )
+      case term @ Term.ApplyInfix.After_4_6_0(_, Term.Name("+"), _, Term.ArgClause(List(arg), _)) =>
+        if (SymbolMatcher.exact("java/lang/String#`+`().").matches(term.symbol))
+          isSafeError(
+            arg,
+            arg,
+            symbol => s"Don't use ${symbol.normalized} on + operator",
+            ignoreStrings = true,
+          )
+        else
+          Patch.empty
     }.asPatch
-  }
 
   private def isSafeError(
       term: Term,
