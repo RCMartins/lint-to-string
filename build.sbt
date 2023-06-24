@@ -44,7 +44,6 @@ lazy val rules =
     .settings(
       moduleName := "lint-to-string",
       libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion,
-      publishMavenStyle := true,
       Test / publishArtifact := false,
       pomIncludeRepository := { _ => false }
     )
