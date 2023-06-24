@@ -20,7 +20,6 @@ inThisBuild(
     ),
     githubOwner := "rcmartins",
     githubRepository := "lint-to-string",
-    githubTokenSource := TokenSource.Environment("GITHUB_TOKEN"),
   )
 )
 
