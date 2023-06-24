@@ -15,7 +15,6 @@ inThisBuild(
         url("https://github.com/rcmartins")
       )
     ),
-    version := "0.2.0",
     scalaVersion := V.scala213,
     addCompilerPlugin(
       "org.scalameta" % "semanticdb-scalac" % "4.7.8" cross CrossVersion.full
