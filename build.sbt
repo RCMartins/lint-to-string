@@ -28,14 +28,21 @@ inThisBuild(
         url("https://github.com/rcmartins/lint-to-string"),
         "scm:git:https://github.com/rcmartins/lint-to-string.git"
       )
-    )
+    ),
+    credentials +=
+      Credentials(
+        "GitHub Package Registry",
+        "maven.pkg.github.com",
+        sys.env.getOrElse("GITHUB_USERNAME", ""),
+        sys.env.getOrElse("GITHUB_TOKEN", ""),
+      )
   )
 )
 
 lazy val rules =
   project
     .settings(
-      moduleName := "scalafix",
+      moduleName := "lint-to-string",
       libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion,
       publishMavenStyle := true,
       Test / publishArtifact := false,
