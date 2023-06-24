@@ -15,10 +15,19 @@ inThisBuild(
         url("https://github.com/rcmartins")
       )
     ),
-    version := "0.2.0-SNAPSHOT",
+    version := "0.2.0",
     scalaVersion := V.scala213,
     addCompilerPlugin(
       "org.scalameta" % "semanticdb-scalac" % "4.7.8" cross CrossVersion.full
+    ),
+    publishTo := Some(
+      "GitHub Package Registry" at "https://maven.pkg.github.com/rcmartins/lint-to-string"
+    ),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/rcmartins/lint-to-string"),
+        "scm:git:https://github.com/rcmartins/lint-to-string.git"
+      )
     )
   )
 )
@@ -27,7 +36,10 @@ lazy val rules =
   project
     .settings(
       moduleName := "scalafix",
-      libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion
+      libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion,
+      publishMavenStyle := true,
+      Test / publishArtifact := false,
+      pomIncludeRepository := { _ => false }
     )
 
 lazy val input =
