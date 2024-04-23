@@ -4,6 +4,9 @@ LintToString.safeTypes = []
  */
 package fix
 
+import scala.annotation.nowarn
+
+@nowarn("cat=deprecation")
 object LintToString3 {
   def testMethod(): Unit = {
     val str = "some"
