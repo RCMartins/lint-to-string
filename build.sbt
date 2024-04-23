@@ -16,10 +16,26 @@ inThisBuild(
     ),
     scalaVersion := V.scala213,
     addCompilerPlugin(
-      "org.scalameta" % "semanticdb-scalac" % "4.7.8" cross CrossVersion.full
+      "org.scalameta" % "semanticdb-scalac" % "4.9.3" cross CrossVersion.full
     ),
     githubOwner := "rcmartins",
     githubRepository := "lint-to-string",
+    scalacOptions ++= Seq(
+      "-encoding",
+      "UTF-8",
+      "-feature",
+      "-deprecation",
+      "-unchecked",
+      "-language:implicitConversions",
+      "-language:existentials",
+      "-language:dynamics",
+      "-Xlint:-unused",
+      "-Ycache-plugin-class-loader:last-modified",
+      "-Ycache-macro-class-loader:last-modified",
+      "-Xnon-strict-patmat-analysis",
+      "-Xlint:-strict-unsealed-patmat",
+      "-Wunused:imports",
+    ),
   )
 )
 
@@ -48,7 +64,7 @@ lazy val tests =
   project
     .settings(
       publish / skip := true,
-      libraryDependencies += "ch.epfl.scala" % "scalafix-testkit" % "0.11.0" % Test cross CrossVersion.full,
+      libraryDependencies += "ch.epfl.scala" % "scalafix-testkit" % "0.12.0" % Test cross CrossVersion.full,
       scalafixTestkitOutputSourceDirectories :=
         (output / Compile / sourceDirectories).value,
       scalafixTestkitInputSourceDirectories :=
