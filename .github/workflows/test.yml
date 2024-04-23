@@ -16,6 +16,11 @@ jobs:
         with:
           jvm: temurin:11
           apps: sbt
+      - name: Check formatting
+        run: sbt scalafmtSbtCheck scalafmtCheckAll
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       - name: Test
         run: sbt test
         env:
